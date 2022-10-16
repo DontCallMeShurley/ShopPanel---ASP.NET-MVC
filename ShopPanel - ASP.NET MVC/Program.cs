@@ -1,4 +1,8 @@
 
+
+using ShopPanel___ASP.NET_MVC.Autofac;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,4 +29,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+AutofacConfig.ConfigureContainer();
 app.Run();

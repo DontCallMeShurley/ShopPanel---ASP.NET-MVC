@@ -1,12 +1,14 @@
-﻿namespace ShopPanel___ASPNetMVC.Data
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ShopPanel___ASPNetMVC.Data
 {
     public class Buyer
     {
-        int ID { get; set; }
-        string firstName { get; set; }
-        string secondName { get; set; }
+        public int Id { get; set; }
+        public string firstName { get; set; }
+        public string secondName { get; set; }
 
-        List<Products> products { get; set; }
+        public List<Products> products { get; set; }
 
     }
 }
