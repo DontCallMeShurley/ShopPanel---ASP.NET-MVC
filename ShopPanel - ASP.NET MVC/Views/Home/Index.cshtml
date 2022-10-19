@@ -1,8 +1,108 @@
-﻿
-<h2>Всё</h2>
+﻿@model IEnumerable<ShopPanel___ASPNetMVC.Data.Buyer>
 @{
-    foreach (var item in ViewBag.BuyerList)
+    ViewBag.Title = "Покупатели";
+}
+
+@*<h3>Список покупателей</h3>
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+    @foreach (var c in Model)
     {
-        <b>@item.firstName</b>
-    }
+            @Html.ActionLink(c.firstName, "Edit",
+        new { id = c.Id }, new { @class = "compItem" })
+    @Html.DisplayFor(model => c.firstName)
+
+    @Html.DisplayFor(model => c.secondName)
+
+    <button type="button" class="btn btn-success compItem">Success</button>
+    }*@
+<div id="test">
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+    <div class="container">
+        <h2>Список покупателей</h2>
+        <div class="mt-2 mb-2">
+            <button type="button" class="btn btn-info addB" style="height:40px;width:150px">Добавить</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Порядковый номер</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=>c.Id)</td>
+                        <td>@Html.DisplayFor(model=>c.firstName)</td>
+                        <td>@Html.DisplayFor(model=>c.secondName)</td>
+                        <td>
+                            <button type="button" class="btn btn-danger deleteB" id=@c.Id style="height:40px;width:150px">Удалить</button>
+                            <button type="button" class="btn btn-primary editB" id=@c.Id style="height:40px;width:150px">Редактировать</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                @for (int i = 1; i <= ViewBag.countPages; i++)
+                {
+                    if (ViewBag.pageNumber == i)
+                    {
+                        <li class="page-item active"><a class="page-link" href="#" id="pagin" onclick="page(@i)">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" href="#" id="pagin" onclick="page(@i)">@i</a></li>
+                    }
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+        function page(i) {
+            $.get("/Home/Index?pageNumber=" + i, function (data) {
+                $("body").html(data);
+            });
+        };
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".editB").click(function (e) {
+                e.preventDefault();
+                $.get("/Home/Edit?id=" + this.id + "&pageNumber=" + @ViewBag.pageNumber, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+
+            $(".addB").click(function (e) {
+                e.preventDefault();
+                $.get("/Home/Create?pageNumber=" + parseInt(@ViewBag.countPages), function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+
+            $(".deleteB").click(function (e) {
+                e.preventDefault();
+                $.post("/Home/Delete/" + this.id, function (data) {
+                    console.log("ok");
+                    $.get("/Home/Index?pageNumber=" + @ViewBag.PageNumber, function (data) {
+                        $("body").html(data);
+                    });
+                });
+            });
+        })
+    </script>
 }

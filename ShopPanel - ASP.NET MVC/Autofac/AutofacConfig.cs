@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Microsoft.Extensions.Options;
 using ShopPanel___ASP.NET_MVC.Data;
 using ShopPanel___ASP.NET_MVC.Interfaces;
 using ShopPanel___ASPNetMVC.Data;
@@ -16,8 +17,8 @@ namespace ShopPanel___ASP.NET_MVC.Autofac
 
             builder.RegisterControllers(typeof(Program).Assembly);
 
-            builder.RegisterType<BuyerRepository>().As<IRepository<Buyer>>().WithParameter("context", new ShopContext());
-            builder.RegisterType<ProductsRepository>().As<IRepository<Products>>().WithParameter("context", new ShopContext());
+            //builder.RegisterType<BuyerRepository>().As<IRepository<Buyer>>().WithParameter("context", new ShopContext());
+            //builder.RegisterType<ProductsRepository>().As<IRepository<Products>>().WithParameter("context", new ShopContext());
 
             var container = builder.Build();
 

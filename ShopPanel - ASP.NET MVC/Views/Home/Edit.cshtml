@@ -1,0 +1,56 @@
+﻿@model ShopPanel___ASPNetMVC.Data.Buyer
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="text-left">
+            <h4>Покупатель</h4>
+        </div>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group mt-2 mb-2">
+            <span class="input-group-text" id="first-name">Имя</span>
+            <input id="fName" aria-label="First Name" class="form-control" placeholder="Fist Name" type="text" value="@Model.firstName" />
+        </div>
+
+        <div class="input-group mb-2">
+            <span class="input-group-text" id="second-name">Фамилия</span>
+            <input id="sName" aria-label="Second Name" class="form-control" placeholder="Second Name" type="text" value="@Model.secondName" />
+        </div>
+    </div>
+    <button type="button" class="btn btn-success saveB" style="height:40px;width:150px">Сохранить</button>
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".saveB").click(function (e) {
+
+                var data = {
+                    Id: @Model.Id,
+                    firstName: document.getElementById('fName').value,
+                    secondName: document.getElementById('sName').value
+                }
+                let formData = new FormData();
+                formData.append('Id', @Model.Id);
+                formData.append('firstName', document.getElementById('fName').value);
+                formData.append('secondName', document.getElementById('sName').value);
+
+                fetch("/Home/EditOrCreate", {
+                    method: "POST",
+                    body: formData
+                }).then((response) => {
+                    $.get("/Home/Index?pageNumber=" + @ViewBag.PageNumber, function (data) {
+                        $("body").html(data);
+                    });
+
+                    $('#modDialog').modal('hide');
+
+                });
+
+            });
+        })
+    </script>
+}

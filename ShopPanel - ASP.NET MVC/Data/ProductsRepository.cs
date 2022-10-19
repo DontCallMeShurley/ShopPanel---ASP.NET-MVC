@@ -1,7 +1,7 @@
-﻿using System.Data.Entity;
-using ShopPanel___ASPNetMVC.Data;
+﻿using ShopPanel___ASPNetMVC.Data;
 using ShopPanel___ASP.NET_MVC.Interfaces;
 using ShopPanel___ASP.NET_MVC.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ZOLLA.TestTask.Models
 {
@@ -26,6 +26,7 @@ namespace ZOLLA.TestTask.Models
             }
 
             context.Products.Add(item);
+            context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -36,6 +37,7 @@ namespace ZOLLA.TestTask.Models
             {
                 context.Products.Remove(client);
             }
+            context.SaveChanges();
         }
 
         public IEnumerable<Products> Get()
@@ -51,6 +53,7 @@ namespace ZOLLA.TestTask.Models
         public void Update(Products item)
         {
             context.Entry(item).State = EntityState.Modified;
+            context.SaveChanges();
         }
     }
 }
