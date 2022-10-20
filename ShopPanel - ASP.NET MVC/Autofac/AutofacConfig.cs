@@ -5,7 +5,6 @@ using ShopPanel___ASP.NET_MVC.Data;
 using ShopPanel___ASP.NET_MVC.Interfaces;
 using ShopPanel___ASPNetMVC.Data;
 using System.Web.Mvc;
-using ZOLLA.TestTask.Models;
 
 namespace ShopPanel___ASP.NET_MVC.Autofac
 {

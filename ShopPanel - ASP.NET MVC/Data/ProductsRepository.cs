@@ -3,7 +3,7 @@ using ShopPanel___ASP.NET_MVC.Interfaces;
 using ShopPanel___ASP.NET_MVC.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace ZOLLA.TestTask.Models
+namespace ShopPanel___ASPNetMVC.Data
 {
     internal class ProductsRepository : IRepository<Products>
     {

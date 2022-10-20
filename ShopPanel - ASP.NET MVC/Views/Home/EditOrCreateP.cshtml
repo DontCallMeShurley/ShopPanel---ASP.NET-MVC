@@ -1,0 +1,66 @@
+﻿@model ShopPanel___ASPNetMVC.Data.Products
+
+<div id="dialogProduct" class="modal fade">
+    <div id="dialogProduct" class="modal-dialog"></div>
+</div>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="text-left">
+            <h4>Товар</h4>
+        </div>
+        <button aria-label="Close" class="btn-close closeModal" id="closeModal" type="button"></button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group mt-2 mb-2">
+            <span class="input-group-text" id="first-name">Цена</span>
+            <input id="price" aria-label="First Name" class="form-control" placeholder="Fist Name" type="text" value="@Model.Price" />
+        </div>
+
+        <div class="input-group mb-2">
+            <span class="input-group-text" id="second-name">Наименование</span>
+            <input id="Name" aria-label="Second Name" class="form-control" placeholder="Second Name" type="text" value="@Model.Name" />
+        </div>
+
+    </div>
+    <div><button type="button" class="btn btn-success saveP" style="height:40px;width:150px">Сохранить</button></div>
+    
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".closeModal").click(function (e) {
+                e.preventDefault();
+                $.get("/Home/Edit?id=" + @Model.BuyerId + "&pageNumber=" + @ViewBag.pageNumber, function (data) {
+                    $('#modDialog').modal('hide');
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+            $(".saveP").click(function (e) {
+                let formData = new FormData();
+                formData.append('Id', @Model.Id);
+                formData.append('Price', document.getElementById('price').value);
+                formData.append('Name', document.getElementById('Name').value);
+
+                fetch("/Home/EditOrCreateP?buyerId=" + @Model.BuyerId, {
+                    method: "POST",
+                    body: formData
+                }).then((response) => {
+                    $.get("/Home/Edit?id=" + @Model.BuyerId + "&pageNumber=" + @ViewBag.PageNumber, function (data) {
+                        $('#modDialog').modal('hide');
+                        $('#dialogContent').html(data);
+                        $('#modDialog').modal('show');
+                    });
+
+                    $('#dialogProduct').modal('hide');
+
+                });
+
+            });
+        })
+    </script>
+}

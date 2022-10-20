@@ -1,31 +1,75 @@
-﻿@model ShopPanel___ASPNetMVC.Data.Buyer
-<div class="modal-content">
-    <div class="modal-header">
-        <div class="text-left">
-            <h4>Покупатель</h4>
-        </div>
-        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-    </div>
-    <div class="modal-body">
-        <div class="input-group mt-2 mb-2">
-            <span class="input-group-text" id="first-name">Имя</span>
-            <input id="fName" aria-label="First Name" class="form-control" placeholder="Fist Name" type="text" value="@Model.firstName" />
-        </div>
+﻿@using ShopPanel___ASPNetMVC.Data
+@model ShopPanel___ASPNetMVC.Data.Buyer
 
-        <div class="input-group mb-2">
-            <span class="input-group-text" id="second-name">Фамилия</span>
-            <input id="sName" aria-label="Second Name" class="form-control" placeholder="Second Name" type="text" value="@Model.secondName" />
-        </div>
+<div>
+    <div id="dialogProduct" class="modal fade">
+        <div id="dialogProductContent" class="modal-dialog"></div>
     </div>
-    <button type="button" class="btn btn-success saveB" style="height:40px;width:150px">Сохранить</button>
+    <div class="modal-content" style=" height:700px;width:700px"">
+        <div class="modal-header">
+            <div class="text-left">
+                <h4>Покупатель</h4>
+            </div>
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group mt-2 mb-2">
+                <span class="input-group-text" id="first-name">Имя</span>
+                <input id="fName" aria-label="First Name" class="form-control" placeholder="Fist Name" type="text" value="@Model.firstName" />
+            </div>
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" id="second-name">Фамилия</span>
+                <input id="sName" aria-label="Second Name" class="form-control" placeholder="Second Name" type="text" value="@Model.secondName" />
+            </div>
+            @if (Model.Id > 0)
+            {
+                <button type="button" class="btn btn-info addP">Добавить покупку</button>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Порядковый номер</th>
+                            <th>Стоимость</th>
+                            <th>Наименование</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.products != null)
+                            @foreach (Products c in ViewBag.products)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(model=>c.Id)</td>
+                                    <td>@Html.DisplayFor(model=>c.Price)</td>
+                                    <td>@Html.DisplayFor(model=>c.Name)</td>
+                                   @* <td>
+                                        <button type="button" class="btn btn-danger btn-sm deleteP" id=@c.Id style="height:40px;width:150px">Удалить</button>
+                                        <button type="button" class="btn btn-primary btn-sm editP" id=@c.Id style="height:40px;width:150px">Редактировать</button>
+                                    </td>*@
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div><button type="button" class="btn btn-success saveB" style="height:40px;width:150px">Сохранить</button></div>
+
+    </div>
 </div>
-
 @section scripts
     {
     <script type="text/javascript">
 
         $(function () {
             $.ajaxSetup({ cache: false });
+            $(".addP").click(function (e) {
+                e.preventDefault();
+                $.get("/Home/CreateP?pageNumber=" + parseInt(@ViewBag.countPages) + "&buyerId=" + @Model.Id, function (data) {
+                    $('#modDialog').modal('hide');
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
             $(".saveB").click(function (e) {
 
                 var data = {

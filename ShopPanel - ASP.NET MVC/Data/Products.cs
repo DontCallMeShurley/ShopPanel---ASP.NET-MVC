@@ -10,6 +10,6 @@ namespace ShopPanel___ASPNetMVC.Data
 
         public int dateCreated { get; set; }
 
-        public Buyer Buyer { get; set; }   
+        public int BuyerId { get; set; }   
     }
 }

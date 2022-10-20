@@ -42,8 +42,8 @@
                         <td>@Html.DisplayFor(model=>c.firstName)</td>
                         <td>@Html.DisplayFor(model=>c.secondName)</td>
                         <td>
-                            <button type="button" class="btn btn-danger deleteB" id=@c.Id style="height:40px;width:150px">Удалить</button>
-                            <button type="button" class="btn btn-primary editB" id=@c.Id style="height:40px;width:150px">Редактировать</button>
+                            <button type="button" class="btn btn-danger btn-sm deleteB" id=@c.Id style="height:40px;width:150px">Удалить</button>
+                            <button type="button" class="btn btn-primary btn-sm editB" id=@c.Id style="height:40px;width:150px">Редактировать</button>
                         </td>
                     </tr>
                 }
@@ -81,6 +81,7 @@
             $(".editB").click(function (e) {
                 e.preventDefault();
                 $.get("/Home/Edit?id=" + this.id + "&pageNumber=" + @ViewBag.pageNumber, function (data) {
+                    $('#modDialog').modal('hide');
                     $('#dialogContent').html(data);
                     $('#modDialog').modal('show');
                 });
@@ -89,6 +90,7 @@
             $(".addB").click(function (e) {
                 e.preventDefault();
                 $.get("/Home/Create?pageNumber=" + parseInt(@ViewBag.countPages), function (data) {
+                    $('#modDialog').modal('hide');
                     $('#dialogContent').html(data);
                     $('#modDialog').modal('show');
                 });

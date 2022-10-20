@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopPanel___ASP.NET_MVC.Data;
 using ShopPanel___ASPNetMVC.Data;
-using System.Diagnostics;
-using ZOLLA.TestTask.Models;
 
 namespace ShopPanel___ASP.NET_MVC.Controllers
 {
@@ -11,11 +9,13 @@ namespace ShopPanel___ASP.NET_MVC.Controllers
 
         private readonly ShopContext _db;
         private readonly BuyerRepository _buyerRepository;
+        private readonly ProductsRepository _productsRepository;
         private int pageSize = 3;
         public HomeController(ShopContext db)
         {
             _db = db;
             _buyerRepository = new BuyerRepository(_db);
+            _productsRepository = new ProductsRepository(_db);
         }
 
         [HttpGet]
@@ -42,10 +42,30 @@ namespace ShopPanel___ASP.NET_MVC.Controllers
             var buyer = _buyerRepository.Get(id);
 
             ViewBag.pageNumber = pageNumber;
+            ViewBag.products = _productsRepository.Get().Where(a => a.BuyerId == id).ToList();
 
             return View(buyer);
         }
 
+        [HttpGet]
+        public IActionResult EditP(int id, int pageNumber = 1)
+        {
+            var product = _productsRepository.Get(id);
+
+            ViewBag.pageNumber = pageNumber;
+
+            return View(product);
+        }
+        [HttpGet]
+        public IActionResult CreateP(int buyerId,int pageNumber = 1)
+        {
+            var product = new Products();
+
+            product.BuyerId = buyerId; 
+            ViewBag.pageNumber = pageNumber;
+
+            return View("EditOrCreateP", product);
+        }
         [HttpGet]
         public IActionResult Create(int pageNumber = 1)
         {
@@ -55,6 +75,7 @@ namespace ShopPanel___ASP.NET_MVC.Controllers
 
             return View("Edit",buyer);
         }
+
         [HttpPost]
         public IActionResult EditOrCreate(Buyer buyer)
         {
@@ -64,6 +85,23 @@ namespace ShopPanel___ASP.NET_MVC.Controllers
                 _buyerRepository.Update(buyer);
             else
                 _buyerRepository.Create(buyer);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult EditOrCreateP(Products products, int buyerId)
+        {
+            products.BuyerId = buyerId; 
+            var _products = _productsRepository.Get(products.Id);
+
+            if (_products != null)
+                _productsRepository.Update(products);
+            else
+            {
+                products.Id = 0;
+                _productsRepository.Create(products);
+            }
 
             return Ok();
         }

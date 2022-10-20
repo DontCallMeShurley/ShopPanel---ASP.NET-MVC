@@ -10,7 +10,7 @@ namespace ShopPanel___ASPNetMVC.Data
         [Display(Name = "Фамилия")]
         public string? secondName { get; set; }
 
-        public List<Products> products { get; set; }
+       // public List<Products> products { get; set; }
 
     }
 }
