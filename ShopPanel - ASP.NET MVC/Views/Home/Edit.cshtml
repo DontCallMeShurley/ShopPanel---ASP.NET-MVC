@@ -13,14 +13,17 @@
             <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
         </div>
         <div class="modal-body">
+
+            <font hidden id="fNameValid" color="red">Поле обязательно к заполнению</font>
+
             <div class="input-group mt-2 mb-2">
                 <span class="input-group-text" id="first-name">Имя</span>
-                <input id="fName" aria-label="First Name" class="form-control" placeholder="Fist Name" type="text" value="@Model.firstName" />
+                <input id="fName" aria-label="First Name" class="form-control" placeholder="Имя" type="text" value="@Model.firstName" />
             </div>
-
+            <font hidden id="sNameValid" color="red">Поле обязательно к заполнению</font>
             <div class="input-group mb-2">
                 <span class="input-group-text" id="second-name">Фамилия</span>
-                <input id="sName" aria-label="Second Name" class="form-control" placeholder="Second Name" type="text" value="@Model.secondName" />
+                <input id="sName" aria-label="Second Name" class="form-control" placeholder="Фамилия" type="text" value="@Model.secondName" />
             </div>
             @if (Model.Id > 0)
             {
@@ -72,6 +75,21 @@
             });
             $(".saveB").click(function (e) {
 
+            document.getElementById('sNameValid').setAttribute("hidden", "true");
+            document.getElementById('fNameValid').setAttribute("hidden", "true");
+
+            if (document.getElementById('fName').value == "" || document.getElementById('sName').value == "") 
+            {
+                if (document.getElementById('fName').value == "")
+                {
+                document.getElementById('fNameValid').removeAttribute("hidden");
+                }
+                if (document.getElementById('sName').value == "") 
+                {
+                    document.getElementById('sNameValid').removeAttribute("hidden");
+                }
+                return;
+            }
                 var data = {
                     Id: @Model.Id,
                     firstName: document.getElementById('fName').value,

@@ -81,7 +81,7 @@ namespace ShopPanel___ASP.NET_MVC.Controllers
         {
             var _buyer = _buyerRepository.Get(buyer.Id);
 
-            if (_buyer != null)
+            if (_buyer != null) 
                 _buyerRepository.Update(buyer);
             else
                 _buyerRepository.Create(buyer);

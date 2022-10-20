@@ -11,19 +11,20 @@
         <button aria-label="Close" class="btn-close closeModal" id="closeModal" type="button"></button>
     </div>
     <div class="modal-body">
+        <font hidden id="Validb" color="red">Все поля обязательны к заполнению</font>
         <div class="input-group mt-2 mb-2">
             <span class="input-group-text" id="first-name">Цена</span>
-            <input id="price" aria-label="First Name" class="form-control" placeholder="Fist Name" type="text" value="@Model.Price" />
+            <input id="price" aria-label="First Name" class="form-control" placeholder="Цена" type="text" value="@Model.Price" />
         </div>
 
         <div class="input-group mb-2">
             <span class="input-group-text" id="second-name">Наименование</span>
-            <input id="Name" aria-label="Second Name" class="form-control" placeholder="Second Name" type="text" value="@Model.Name" />
+            <input id="Name" aria-label="Second Name" class="form-control" placeholder="Наименование" type="text" value="@Model.Name" />
         </div>
 
     </div>
     <div><button type="button" class="btn btn-success saveP" style="height:40px;width:150px">Сохранить</button></div>
-    
+
 </div>
 
 @section scripts
@@ -41,6 +42,13 @@
                 });
             });
             $(".saveP").click(function (e) {
+                document.getElementById('Validb').setAttribute("hidden", "true");
+
+                if (document.getElementById('price').value == "" || document.getElementById('Name').value == "") {
+                    document.getElementById('Validb').removeAttribute("hidden");
+                    return;
+                }
+
                 let formData = new FormData();
                 formData.append('Id', @Model.Id);
                 formData.append('Price', document.getElementById('price').value);
